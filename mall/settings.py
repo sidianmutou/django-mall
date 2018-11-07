@@ -32,7 +32,6 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-
 INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'goods.apps.GoodsConfig',
@@ -51,6 +50,7 @@ INSTALLED_APPS = [
     # 'trade',
     # 'user_operation',
     'DjangoUeditor',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

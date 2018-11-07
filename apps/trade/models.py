@@ -1,7 +1,10 @@
 from django.db import models
 from goods.models import Goods
 from datetime import datetime
-
+# 但是当第三方模块根本不知道你的user model在哪里如何导入呢
+from django.contrib.auth import get_user_model
+# 这个方法会去setting中找AUTH_USER_MODEL
+User = get_user_model()
 # Create your models here.
 class OrderInfo(models.Model):
     """

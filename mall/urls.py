@@ -15,15 +15,23 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from django.conf.urls import include,re_path
+from django.conf.urls import include, re_path
 from django.views.static import serve
 from .settings import MEDIA_ROOT
 import xadmin
+from goods.view_base import GoodsListView
+from rest_framework.documentation import include_docs_urls
 
 urlpatterns = [
+
+    # path('xadmin/', admin.site.urls),
     path('xadmin/', xadmin.site.urls),
     # 富文本相关url
     path('ueditor/', include('DjangoUeditor.urls')),
     # 处理图片显示的url,使用Django自带serve,传入参数告诉它去哪个路径找，我们有配置好的路径MEDIAROOT
     re_path('media/(?P<path>.*)', serve, {"document_root": MEDIA_ROOT}),
+    # 商品列表页
+    path('goods/', GoodsListView.as_view(), name="goods-list"),
+    path('docs/', include_docs_urls(title='mtianyan生鲜超市文档')),
+    path('api-auth/', include('rest_framework.urls'))
 ]

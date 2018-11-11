@@ -16,6 +16,10 @@ from rest_framework import generics
 from rest_framework.generics import mixins
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import viewsets
+from rest_framework import filters
+
+from django_filters.rest_framework import DjangoFilterBackend
+from .filters import GoodsFilter
 
 class GoodsPagination(PageNumberPagination):
     page_size = 15
@@ -32,9 +36,29 @@ class GoodsListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     serializer_class = GoodsSerializer
     pagination_class = GoodsPagination
 
+    # 设置三大常用过滤器之DjangoFilterBackend, SearchFilter
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
+    # filter_fields = ('name', 'shop_price')
+
+    # 设置filter的类为我们自定义的类
+    filter_class = GoodsFilter
+
+    # 设置我们的search字段
+    search_fields = ('name', 'goods_brief', 'goods_desc')
+    # 设置排序
+    ordering_fields = ('sold_num', 'add_time')
+
+
+
+    # def get_queryset(self):
+    #     # 价格大于100的
+    #     price_min = self.request.query_params.get('price_min', 0)
+    #     if price_min:
+    #         self.queryset = Goods.objects.filter(shop_price=price_min).order_by('-add_time')
+    #     return self.queryset
+
     # def get(self, request, *args, **kwargs):
     #     return self.list(request, *args, **kwargs)
-
 
     # def post(self, request, format=None):
     #     serializer = GoodsSerializer(data=request.data)
@@ -42,6 +66,3 @@ class GoodsListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     #         serializer.save()
     #         return Response(serializer.data, status=status.HTTP_201_CREATED)
     #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-

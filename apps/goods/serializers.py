@@ -8,9 +8,19 @@
 from rest_framework import serializers
 from .models import Goods,GoodsCategory
 
-class GoodsSerializer(serializers.Serializer):
-    name = serializers.CharField(required=True,max_length=100)
-    click_num = serializers.IntegerField(default=0)
+
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GoodsCategory
+        fields = "__all__"
+
+
+
+
+class GoodsSerializer(serializers.ModelSerializer):
+    category = CategorySerializer()
 
     class Meta:
         model = Goods
@@ -22,22 +32,5 @@ class GoodsSerializer(serializers.Serializer):
         Create and return a new `Goods` instance, given the validated data.
         """
         return Goods.objects.create(**validated_data)
-
-
-class CategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = GoodsCategory
-        fields = "__all__"
-
-
-class GoodsSerializer(serializers.ModelSerializer):
-    category = CategorySerializer()
-
-    class Meta:
-        model = Goods
-        # fields = ('category', 'goods_sn', 'name', 'click_num', 'sold_num', 'market_price')
-        fields = "__all__"
-
-
 
 

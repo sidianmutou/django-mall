@@ -10,34 +10,38 @@ from django.shortcuts import render
 # Create your views here.
 from django.views.generic.base import View
 from .models import Goods
-from goods.serializers import GoodsSerializer
+from .serializers import GoodsSerializer
 from rest_framework.response import Response
-class GoodsListView(View):
-    def get(self, request):
+from rest_framework import generics
+from rest_framework.generics import mixins
+from rest_framework.pagination import PageNumberPagination
+from rest_framework import viewsets
+
+class GoodsPagination(PageNumberPagination):
+    page_size = 15
+    page_size_query_param = 'page_size'
+    page_query_param = "page"
+    max_page_size = 100
+
+
+class GoodsListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    """
+        商品列表页
         """
-        通过django的view实现商品列表页
-        """
-        json_list = []
-        goods = Goods.objects.all()[:10]
+    queryset = Goods.objects.all()
+    serializer_class = GoodsSerializer
+    pagination_class = GoodsPagination
 
-        from django.forms.models import model_to_dict
-        for good in goods:
-            json_dict = model_to_dict(good)
-            json_list.append(json_dict)
+    # def get(self, request, *args, **kwargs):
+    #     return self.list(request, *args, **kwargs)
 
-        import json
-        from django.core import serializers
-        json_data = serializers.serialize('json', goods)
-        json_data = json.loads(json_data)
-        from django.http import HttpResponse, JsonResponse
-        return JsonResponse(json_data, safe=False)
 
-    def post(self, request, format=None):
-        serializer = GoodsSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    # def post(self, request, format=None):
+    #     serializer = GoodsSerializer(data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 

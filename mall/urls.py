@@ -19,8 +19,17 @@ from django.conf.urls import include, re_path
 from django.views.static import serve
 from .settings import MEDIA_ROOT
 import xadmin
-from goods.view_base import GoodsListView
+from goods.view_base import GoodsListViewSet
 from rest_framework.documentation import include_docs_urls
+from rest_framework.routers import DefaultRouter
+router = DefaultRouter()
+
+# 配置goods的url
+router.register(r'goods', GoodsListViewSet)
+
+# goods_list = GoodsListViewSet.as_view({
+#     'get': 'list'
+# })
 
 urlpatterns = [
 
@@ -31,7 +40,9 @@ urlpatterns = [
     # 处理图片显示的url,使用Django自带serve,传入参数告诉它去哪个路径找，我们有配置好的路径MEDIAROOT
     re_path('media/(?P<path>.*)', serve, {"document_root": MEDIA_ROOT}),
     # 商品列表页
-    path('goods/', GoodsListView.as_view(), name="goods-list"),
+    # path('goods/', goods_list, name="goods-list"),
     path('docs/', include_docs_urls(title='mtianyan生鲜超市文档')),
-    path('api-auth/', include('rest_framework.urls'))
+    path('api-auth/', include('rest_framework.urls')),
+    # router的path路径
+    re_path('^', include(router.urls)),
 ]

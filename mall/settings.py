@@ -52,9 +52,13 @@ INSTALLED_APPS = [
     'DjangoUeditor',
     'rest_framework',
     'django_filters',
+    'corsheaders',
+    'rest_framework.authtoken',
+
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -62,7 +66,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = (
+    '127.0.0.1:8080'
+)
 
 ROOT_URLCONF = 'mall.urls'
 
@@ -151,4 +161,19 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
 
     ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    )
+
 }
+
+# 设置邮箱和用户名和手机号均可登录
+# AUTHENTICATION_BACKENDS = (
+#     'users.views.CustomBackend',
+#
+# )
+
+

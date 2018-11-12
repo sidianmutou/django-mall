@@ -9,8 +9,8 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.views.generic.base import View
-from .models import Goods
-from .serializers import GoodsSerializer
+from .models import Goods,GoodsCategory
+from .serializers import GoodsSerializer,CategorySerializer
 from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework.generics import mixins
@@ -28,7 +28,7 @@ class GoodsPagination(PageNumberPagination):
     max_page_size = 100
 
 
-class GoodsListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+class GoodsListViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,viewsets.GenericViewSet):
     """
         商品列表页
         """
@@ -66,3 +66,15 @@ class GoodsListViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     #         serializer.save()
     #         return Response(serializer.data, status=status.HTTP_201_CREATED)
     #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CategoryViewset(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+    """
+    list:
+        商品分类列表数据
+    retrieve:
+        获取商品分类详情
+    """
+    queryset = GoodsCategory.objects.all()
+    serializer_class = CategorySerializer
+

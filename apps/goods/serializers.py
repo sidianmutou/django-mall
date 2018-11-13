@@ -6,9 +6,7 @@
 # @Software: PyCharm
 
 from rest_framework import serializers
-from .models import Goods,GoodsCategory,GoodsImage
-
-
+from .models import Goods, GoodsCategory, GoodsImage
 
 
 class CategorySerializer3(serializers.ModelSerializer):
@@ -19,6 +17,7 @@ class CategorySerializer3(serializers.ModelSerializer):
 
 class CategorySerializer2(serializers.ModelSerializer):
     sub_cat = CategorySerializer3(many=True)
+
     class Meta:
         model = GoodsCategory
         fields = "__all__"
@@ -29,6 +28,7 @@ class CategorySerializer(serializers.ModelSerializer):
     商品一级类别序列化
     """
     sub_cat = CategorySerializer2(many=True)
+
     class Meta:
         model = GoodsCategory
         fields = "__all__"
@@ -37,7 +37,8 @@ class CategorySerializer(serializers.ModelSerializer):
 class GoodsImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = GoodsImage
-        fields = ("image", )
+        fields = ("image",)
+
 
 class GoodsSerializer(serializers.ModelSerializer):
     category = CategorySerializer()
@@ -53,5 +54,3 @@ class GoodsSerializer(serializers.ModelSerializer):
         Create and return a new `Goods` instance, given the validated data.
         """
         return Goods.objects.create(**validated_data)
-
-

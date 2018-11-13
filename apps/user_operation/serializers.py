@@ -26,6 +26,7 @@ class UserFavSerializer(serializers.ModelSerializer):
                 message="已经收藏"
             )
         ]
+
 class UserFavDetailSerializer(serializers.ModelSerializer):
 
     # 通过goods_id拿到商品信息。就需要嵌套的Serializer

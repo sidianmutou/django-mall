@@ -3,17 +3,19 @@ from django.shortcuts import render
 # Create your views here.
 from rest_framework.generics import mixins
 from rest_framework import viewsets
-from .models import UserFav,UserLeavingMessage,UserAddress
-from .serializers import UserFavSerializer,UserFavDetailSerializer,LeavingMessageSerializer,AddressSerializer
+from .models import UserFav, UserLeavingMessage, UserAddress
+from .serializers import UserFavSerializer, UserFavDetailSerializer, LeavingMessageSerializer, AddressSerializer
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 from utils.permissions import IsOwnerOrReadOnly
 
+
 class UserFavViewset(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins.DestroyModelMixin):
     """
     用户收藏功能
     """
+
     # queryset = UserFav.objects.all()
     # 设置动态的Serializer
     def get_serializer_class(self):
@@ -24,9 +26,9 @@ class UserFavViewset(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins.De
 
         return UserFavSerializer
 
-
     authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
-    permission_classes = (IsAuthenticated,IsOwnerOrReadOnly)
+    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)
+    lookup_field = 'goods_id'
 
     def get_queryset(self):
         return UserFav.objects.filter(user=self.request.user)
@@ -70,6 +72,3 @@ class AddressViewset(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return UserAddress.objects.filter(user=self.request.user)
-
-
-

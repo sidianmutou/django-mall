@@ -18,7 +18,7 @@ class BaseSetting(object):
 class GlobalSettings(object):
     site_title = "慕课小店"
     site_footer = "olex1216"
-    # menu_style = "accordion"
+    menu_style = "accordion"
 
 
 class VerifyCodeAdmin(object):

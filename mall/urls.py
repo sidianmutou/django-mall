@@ -41,7 +41,6 @@ router.register(r'users', UserViewset, base_name="users")
 # 配置用户收藏的url
 router.register(r'userfavs', UserFavViewset, base_name="userfavs")
 
-
 urlpatterns = [
 
     # path('xadmin/', admin.site.urls),
@@ -56,6 +55,7 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     # router的path路径
     re_path('^', include(router.urls)),
+
     path('jwt-auth/', obtain_jwt_token),
     path('login/', obtain_jwt_token),
 

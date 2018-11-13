@@ -6,12 +6,16 @@
 # @Software: PyCharm
 
 from rest_framework import serializers
-from .models import  VerifyCode
+from .models import VerifyCode,UserProfile
 from datetime import timedelta, datetime
 from django.db import models
 from rest_framework.validators import UniqueValidator
+from .models import UserProfile
+
 from django.contrib.auth import get_user_model
-User = get_ugitser_model()
+
+User = get_user_model()
+
 
 class UserRegSerializer(serializers.ModelSerializer):
     code = serializers.CharField(required=True, write_only=True, max_length=4, min_length=4, error_messages={
@@ -65,5 +69,11 @@ class UserRegSerializer(serializers.ModelSerializer):
 
     fields = ("username", "code", "mobile", "password")
 
-
+class UserDetailSerializer(serializers.ModelSerializer):
+    """
+    用户详情序列化
+    """
+    class Meta:
+        model = User
+        fields = ("username", "gender", "birthday", "email","mobile")
 

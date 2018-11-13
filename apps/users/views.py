@@ -2,10 +2,13 @@ from django.shortcuts import render
 from django.db.models import Q
 from django.contrib.auth.backends import ModelBackend
 from rest_framework import viewsets
-# from .models import UserProfile
-from .serializers import UserRegSerializer
+from .models import UserProfile
+from .serializers import UserRegSerializer,UserDetailSerializer
 from rest_framework.generics import mixins
 from django.contrib.auth import get_user_model
+from utils.permissions import permissions
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework.authentication import SessionAuthentication
 User = get_user_model()
 # Create your views here.
 class CustomBackend(ModelBackend):
@@ -32,8 +35,35 @@ class CustomBackend(ModelBackend):
 #     'JWT_AUTH_HEADER_PREFIX': 'JWT',
 # }
 
-class UserViewset(mixins.CreateModelMixin, viewsets.GenericViewSet):
+class UserViewset(mixins.CreateModelMixin,mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     """
     用户
     """
-    serializer_class = UserRegSerializer
+    # serializer_class = UserRegSerializer
+    # 重写该方法，不管传什么id，都只返回当前用户
+    def get_object(self):
+        return self.request.user
+
+    def get_permissions(self):
+        if self.action == "retrieve":
+            return [permissions.IsAuthenticated()]
+        elif self.action == "create":
+            return []
+
+        return []
+
+    authentication_classes = (JSONWebTokenAuthentication,SessionAuthentication)
+
+    def get_serializer_class(self):
+        if self.action == "retrieve":
+            return UserDetailSerializer
+        elif self.action == "create":
+            return UserRegSerializer
+
+        return UserDetailSerializer
+
+
+
+
+
+

@@ -21,7 +21,8 @@ from .settings import MEDIA_ROOT
 import xadmin
 from goods.view_base import GoodsListViewSet, CategoryViewset
 from users.views import UserViewset
-from user_operation.views import UserFavViewset
+from user_operation.views import UserFavViewset,LeavingMessageViewset,AddressViewset
+
 from rest_framework.documentation import include_docs_urls
 from rest_framework.authtoken import views
 from rest_framework.routers import DefaultRouter
@@ -36,10 +37,16 @@ router.register(r'goods', GoodsListViewSet, base_name="goods")
 router.register(r'categories', CategoryViewset, base_name="categories")
 
 # 配置users的url
-router.register(r'users', UserViewset, base_name="users")
+# router.register(r'users', UserViewset, base_name="users")
 
 # 配置用户收藏的url
 router.register(r'userfavs', UserFavViewset, base_name="userfavs")
+
+# 配置用户留言的url
+router.register(r'messages', LeavingMessageViewset, base_name="messages")
+
+# 收货地址
+router.register(r'address', AddressViewset, base_name="address")
 
 urlpatterns = [
 

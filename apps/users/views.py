@@ -35,7 +35,7 @@ class CustomBackend(ModelBackend):
 #     'JWT_AUTH_HEADER_PREFIX': 'JWT',
 # }
 
-class UserViewset(mixins.CreateModelMixin,mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+class UserViewset(mixins.CreateModelMixin,mixins.UpdateModelMixin,mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     """
     用户
     """

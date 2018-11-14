@@ -19,7 +19,7 @@ from django.conf.urls import include, re_path
 from django.views.static import serve
 from .settings import MEDIA_ROOT
 import xadmin
-from goods.view_base import GoodsListViewSet, CategoryViewset
+from goods.view_base import GoodsListViewSet, CategoryViewset,BannerViewset
 from users.views import UserViewset
 from user_operation.views import UserFavViewset,LeavingMessageViewset,AddressViewset
 from trade.views import ShoppingCartViewset,OrderViewset
@@ -54,6 +54,9 @@ router.register(r'shopcarts', ShoppingCartViewset, base_name="shopcarts")
 
 # 订单相关url
 router.register(r'orders', OrderViewset, base_name="orders")
+
+# 首页banner轮播图url
+router.register(r'banners', BannerViewset, base_name="banners")
 
 urlpatterns = [
 

@@ -6,7 +6,7 @@
 # @Software: PyCharm
 
 from rest_framework import serializers
-from .models import Goods, GoodsCategory, GoodsImage
+from .models import Goods, GoodsCategory, GoodsImage,Banner
 
 
 class CategorySerializer3(serializers.ModelSerializer):
@@ -54,3 +54,10 @@ class GoodsSerializer(serializers.ModelSerializer):
         Create and return a new `Goods` instance, given the validated data.
         """
         return Goods.objects.create(**validated_data)
+
+class BannerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Banner
+        fields = "__all__"
+
+

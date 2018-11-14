@@ -22,7 +22,7 @@ class GoodsFilter(filters.FilterSet):
 
     class Meta:
         model = Goods
-        fields = ['price_min', 'price_max', 'name','is_hot']
+        fields = ['price_min', 'price_max', 'name','is_hot','is_new']
 
     top_category = filters.NumberFilter(field_name="category", method='top_category_filter')
 

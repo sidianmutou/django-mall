@@ -9,8 +9,8 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.views.generic.base import View
-from .models import Goods,GoodsCategory
-from .serializers import GoodsSerializer,CategorySerializer
+from .models import Goods,GoodsCategory,Banner
+from .serializers import GoodsSerializer,CategorySerializer,BannerSerializer
 from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework.generics import mixins
@@ -78,3 +78,10 @@ class CategoryViewset(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets
     queryset = GoodsCategory.objects.all()
     serializer_class = CategorySerializer
 
+
+class BannerViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
+    """
+    获取轮播图列表
+    """
+    queryset = Banner.objects.all().order_by("index")
+    serializer_class = BannerSerializer

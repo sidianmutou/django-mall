@@ -22,7 +22,7 @@ import xadmin
 from goods.view_base import GoodsListViewSet, CategoryViewset
 from users.views import UserViewset
 from user_operation.views import UserFavViewset,LeavingMessageViewset,AddressViewset
-from trade.views import ShoppingCartViewset
+from trade.views import ShoppingCartViewset,OrderViewset
 
 from rest_framework.documentation import include_docs_urls
 from rest_framework.authtoken import views
@@ -51,6 +51,9 @@ router.register(r'address', AddressViewset, base_name="address")
 
 # 购物车
 router.register(r'shopcarts', ShoppingCartViewset, base_name="shopcarts")
+
+# 订单相关url
+router.register(r'orders', OrderViewset, base_name="orders")
 
 urlpatterns = [
 

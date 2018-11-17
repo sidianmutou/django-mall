@@ -20,7 +20,7 @@ from django.views.static import serve
 from .settings import MEDIA_ROOT
 import xadmin
 from goods.view_base import GoodsListViewSet, CategoryViewset,BannerViewset
-from users.views import UserViewset
+from users.views import UserViewset,SmsCodeViewset
 from user_operation.views import UserFavViewset,LeavingMessageViewset,AddressViewset
 from trade.views import ShoppingCartViewset,OrderViewset
 
@@ -38,7 +38,7 @@ router.register(r'goods', GoodsListViewSet, base_name="goods")
 router.register(r'categories', CategoryViewset, base_name="categories")
 
 # 配置users的url
-# router.register(r'users', UserViewset, base_name="users")
+router.register(r'users', UserViewset, base_name="users")
 
 # 配置用户收藏的url
 router.register(r'userfavs', UserFavViewset, base_name="userfavs")
@@ -58,26 +58,37 @@ router.register(r'orders', OrderViewset, base_name="orders")
 # 首页banner轮播图url
 router.register(r'banners', BannerViewset, base_name="banners")
 
+# 配置codes的url
+router.register(r'codes', SmsCodeViewset, base_name="codes")
+
 urlpatterns = [
 
     # path('xadmin/', admin.site.urls),
     path('xadmin/', xadmin.site.urls),
+
     # 富文本相关url
     path('ueditor/', include('DjangoUeditor.urls')),
+
     # 处理图片显示的url,使用Django自带serve,传入参数告诉它去哪个路径找，我们有配置好的路径MEDIAROOT
     re_path('media/(?P<path>.*)', serve, {"document_root": MEDIA_ROOT}),
-    # 商品列表页
-    # path('goods/', goods_list, name="goods-list"),
-    path('docs/', include_docs_urls(title='olex生鲜超市文档')),
-    path('api-auth/', include('rest_framework.urls')),
+
     # router的path路径
     re_path('^', include(router.urls)),
 
-    path('jwt-auth/', obtain_jwt_token),
+    path('docs/', include_docs_urls(title='olex生鲜超市文档')),
+
+    path('api-auth/', include('rest_framework.urls')),
+
+    # drf自带的token授权登录,获取token需要向该地址post数据
+    # path('api-token-auth/', views.obtain_auth_token),
+
+    path('api-token-auth/', obtain_jwt_token),
+
     path('login/', obtain_jwt_token),
 
-]
+    path('jwt-auth/', obtain_jwt_token),
 
+]
 # urlpatterns += [
 #     path('api-token-auth/', views.obtain_auth_token)
 # ]

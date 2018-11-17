@@ -17,8 +17,10 @@ from rest_framework.generics import mixins
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import viewsets
 from rest_framework import filters
-
+from rest_framework.authentication import TokenAuthentication
 from django_filters.rest_framework import DjangoFilterBackend
+
+
 from .filters import GoodsFilter
 
 class GoodsPagination(PageNumberPagination):
@@ -48,7 +50,8 @@ class GoodsListViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,viewsets
     # 设置排序
     ordering_fields = ('sold_num', 'add_time')
 
-
+    # 设置列表页的单独auth认证
+    # authentication_classes = (TokenAuthentication,)
 
     # def get_queryset(self):
     #     # 价格大于100的
